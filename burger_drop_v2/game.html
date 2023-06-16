@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Game</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      position: relative;
+    }
+
+    #gameCanvas {
+      border: 10px solid black;
+      background: url(assets/play_background.jpg) no-repeat center center;
+      background-size: cover;
+      z-index: 1;
+    }
+
+    #gameCanvas::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.9);
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas" width="450" height="775"></canvas>
+  <script src="assets/falling_gamev2.js"></script>
+</body>
+</html>
