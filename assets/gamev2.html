@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Game</title>
+    <style>
+        canvas {
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="720" height="1080"></canvas>
+
+    <script>
+        // Initialize variables
+        var canvas = document.getElementById("gameCanvas");
+        var ctx = canvas.getContext("2d");
+        var playerImage = new Image();
+        var playerImageOriginal = new Image();
+        var goodItemImage = new Image();
+        var badItemImage = new Image();
+        var surpriseItemImage = new Image();
+        var medicalItemImage = new Image();
+        var heartImage = new Image();
+        var gameOverImage = new Image();
+        var playerWidth = 70;
+        var playerHeight = 100;
+        var goodItemWidth = 40;
+        var goodItemHeight = 40;
+        var badItemWidth = 80;
+        var badItemHeight = 80;
+        var surpriseItemWidth = 30;
+        var surpriseItemHeight = 50;
+        var medicalItemWidth = 50;
+        var medicalItemHeight = 50;
+        var playerX = canvas.width / 2 - playerWidth / 2;
+        var playerY = canvas.height - playerHeight;
+        var goodItems = [];
+        var badItems = [];
+        var surpriseItems = [];
+        var medicalItems = [];
+        var maxItems = 5;
+        var itemSpeed = 2;
+        var fallAcceleration = 0.003;
+        var spawnCounter = 1;
+        var score = 0;
+        var hearts = 3;
+        var isGameOver = false;
+        var isPlayerImmune = false;
+        var immuneDuration = 7;
+        var immunityTimer = 0;
+
+        // Load images
+        playerImage.src = "player.png";
+        playerImageOriginal.src = "player_original.png";
+        goodItemImage.src = "good_item.png";
+        badItemImage.src = "bad_item.png";
+        surpriseItemImage.src = "slime.png";
+        medicalItemImage.src = "medical_item.png";
+        heartImage.src = "heart.png";
+        gameOverImage.src = "game_over.jpg";
+
+        // Handle player-item collision
+        function checkCollision() {
+            for (var i = 0; i < goodItems.length; i++) {
+                var goodItem = goodItems[i];
+                if (
+                    playerX < goodItem.x + goodItemWidth &&
+                    playerX + playerWidth > goodItem.x &&
+                    playerY < goodItem.y + goodItemHeight &&
+                    playerY + playerHeight > goodItem.y
+                ) {
+                    score += 10;
+                    goodItems.splice(i, 1);
+                }
+            }
+
+            for (var i = 0; i < badItems.length; i++) {
+                var badItem = badItems[i];
+                if (
+                    playerX < badItem.x + badItemWidth &&
+                    playerX + playerWidth > badItem.x &&
+                    playerY < badItem.y + badItemHeight &&
+                    playerY + playerHeight > badItem.y
+                ) {
+                    if (!isPlayerImmune) {
+                        hearts--;
+                    }
+                    badItems.splice(i, 1);
+                }
+            }
+
+            for (var i = 0; i < medicalItems.length; i++) {
+                var medicalItem = medicalItems[i];
+                if (
+                    playerX < medicalItem.x + medicalItemWidth &&
+                    playerX + playerWidth > medicalItem.x &&
+                    playerY < medicalItem.y + medicalItemHeight &&
+                    playerY + playerHeight > medicalItem.y
+                ) {
+                    hearts++;
+                    medicalItems.splice(i, 1);
+                }
+            }
+
+            for (var i = 0; i < surpriseItems.length; i++) {
+                var surpriseItem = surpriseItems[i];
+                if (
+                    playerX < surpriseItem.x + surpriseItemWidth &&
+                    playerX + playerWidth > surpriseItem.x &&
+                    playerY < surpriseItem.y + surpriseItemHeight &&
+                    playerY + playerHeight > surpriseItem.y
+                ) {
+                    isPlayerImmune = true;
+                    surpriseItems.splice(i, 1);
+                    setTimeout(function () {
+                        isPlayerImmune = false;
+                    }, immuneDuration * 1000);
+                }
+            }
+        }
+
+        // Update game state
+        function update() {
+            if (!isGameOver) {
+                // Clear canvas
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Draw player
+                if (isPlayerImmune) {
+                    ctx.drawImage(
+                        playerImage,
+                        playerX,
+                        playerY,
+                        playerWidth,
+                        playerHeight
+                    );
+                } else {
+                    ctx.drawImage(
+                        playerImageOriginal,
+                        playerX,
+                        playerY,
+                        playerWidth,
+                        playerHeight
+                    );
+                }
+
+                // Draw items
+                for (var i = 0; i < goodItems.length; i++) {
+                    var goodItem = goodItems[i];
+                    ctx.drawImage(
+                        goodItemImage,
+                        goodItem.x,
+                        goodItem.y,
+                        goodItemWidth,
+                        goodItemHeight
+                    );
+                }
+
+                for (var i = 0; i < badItems.length; i++) {
+                    var badItem = badItems[i];
+                    ctx.drawImage(
+                        badItemImage,
+                        badItem.x,
+                        badItem.y,
+                        badItemWidth,
+                        badItemHeight
+                    );
+                }
+
+                for (var i = 0; i < medicalItems.length; i++) {
+                    var medicalItem = medicalItems[i];
+                    ctx.drawImage(
+                        medicalItemImage,
+                        medicalItem.x,
+                        medicalItem.y,
+                        medicalItemWidth,
+                        medicalItemHeight
+                    );
+                }
+
+                for (var i = 0; i < surpriseItems.length; i++) {
+                    var surpriseItem = surpriseItems[i];
+                    ctx.drawImage(
+                        surpriseItemImage,
+                        surpriseItem.x,
+                        surpriseItem.y,
+                        surpriseItemWidth,
+                        surpriseItemHeight
+                    );
+                }
+
+                // Draw hearts
+                for (var i = 0; i < hearts; i++) {
+                    ctx.drawImage(heartImage, i * 40, 20, 30, 30);
+                }
+
+                // Draw score
+                ctx.font = "24px Arial";
+                ctx.fillStyle = "#000";
+                ctx.fillText("Score: " + score, 20, 60);
+
+                // Check collision
+                checkCollision();
+
+                // Move items
+                for (var i = 0; i < goodItems.length; i++) {
+                    var goodItem = goodItems[i];
+                    goodItem.y += goodItem.speed;
+                }
+
+                for (var i = 0; i < badItems.length; i++) {
+                    var badItem = badItems[i];
+                    badItem.y += badItem.speed;
+                }
+
+                for (var i = 0; i < medicalItems.length; i++) {
+                    var medicalItem = medicalItems[i];
+                    medicalItem.y += medicalItem.speed;
+                }
+
+                for (var i = 0; i < surpriseItems.length; i++) {
+                    var surpriseItem = surpriseItems[i];
+                    surpriseItem.y += surpriseItem.speed;
+                }
+
+                // Spawn items
+                spawnCounter++;
+                if (spawnCounter % 100 === 0 && goodItems.length < maxItems) {
+                    var goodItemX = Math.random() * (canvas.width - goodItemWidth);
+                    var goodItemY = 0 - goodItemHeight;
+                    var goodItem = { x: goodItemX, y: goodItemY, speed: itemSpeed };
+                    goodItems.push(goodItem);
+                }
+
+                if (spawnCounter % 150 === 0 && badItems.length < maxItems) {
+                    var badItemX = Math.random() * (canvas.width - badItemWidth);
+                    var badItemY = 0 - badItemHeight;
+                    var badItem = { x: badItemX, y: badItemY, speed: itemSpeed };
+                    badItems.push(badItem);
+                }
+
+                if (spawnCounter % 200 === 0 && medicalItems.length < maxItems) {
+                    var medicalItemX = Math.random() * (canvas.width - medicalItemWidth);
+                    var medicalItemY = 0 - medicalItemHeight;
+                    var medicalItem = { x: medicalItemX, y: medicalItemY, speed: itemSpeed };
+                    medicalItems.push(medicalItem);
+                }
+
+                if (spawnCounter % 250 === 0 && surpriseItems.length < maxItems) {
+                    var surpriseItemX = Math.random() * (canvas.width - surpriseItemWidth);
+                    var surpriseItemY = 0 - surpriseItemHeight;
+                    var surpriseItem = { x: surpriseItemX, y: surpriseItemY, speed: itemSpeed };
+                    surpriseItems.push(surpriseItem);
+                }
+
+                // Game over condition
+                if (hearts <= 0) {
+                    isGameOver = true;
+                }
+
+                // Increase item speed
+                if (spawnCounter % 1000 === 0) {
+                    itemSpeed += 0.5;
+                }
+
+                // Repeat update function
+                requestAnimationFrame(update);
+            } else {
+                // Draw game over image
+                ctx.drawImage(gameOverImage, 0, 0, canvas.width, canvas.height);
+
+                // Draw final score
+                ctx.font = "36px Arial";
+                ctx.fillStyle = "#fff";
+                ctx.fillText("Final Score: " + score, canvas.width / 2 - 120, canvas.height / 2 + 50);
+            }
+        }
+
+        // Handle player movement
+        function movePlayer(event) {
+            if (!isGameOver) {
+                if (event.key === "ArrowLeft") {
+                    if (playerX > 0) {
+                        playerX -= 20;
+                    }
+                } else if (event.key === "ArrowRight") {
+                    if (playerX < canvas.width - playerWidth) {
+                        playerX += 20;
+                    }
+                }
+            }
+        }
+
+        // Start game
+        document.addEventListener("keydown", movePlayer);
+        update();
+    </script>
+</body>
+</html>
