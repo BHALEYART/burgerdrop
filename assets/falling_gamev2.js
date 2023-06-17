@@ -382,9 +382,6 @@ canvas.addEventListener("mousemove", function (event) {
   playerX = event.clientX - rect.left - playerWidth / 2;
 });
 
-// Hide the mouse cursor
-canvas.style.cursor = "none";
-
 // Start the game loop
 resetItems();
 update();
