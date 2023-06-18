@@ -43,17 +43,17 @@ var isPlayerImmune = false;
 var immuneDuration = 10; // Duration of player immunity in seconds
 var immunityTimer = 0; // Remaining time for player immunity
 
-var backgroundMusic = new Audio("assets/game_music.mp3");
+var backgroundMusic = new Audio("assets/game_music.m4a");
 backgroundMusic.loop = true;
 backgroundMusic.volume = 0.1;
 backgroundMusic.play();
 
-var goodItemSound = new Audio("assets/point_sound.mp3");
-var badItemSound = new Audio("assets/damage_sound.mp3");
+var goodItemSound = new Audio("assets/point_sound.m4a");
+var badItemSound = new Audio("assets/damage_sound.m4a");
 badItemSound.volume = 0.7;
-var lowScoreSound = new Audio("assets/low_score_gameover.mp3");
+var lowScoreSound = new Audio("assets/low_score_gameover.m4a");
 lowScoreSound.volume = 0.7;
-var highScoreSound = new Audio("assets/high_score_gameover.mp3");
+var highScoreSound = new Audio("assets/high_score_gameover.m4a");
 highScoreSound.volume = 0.7;
 
 restartButton.innerText = "Try Again?";
@@ -160,7 +160,7 @@ function checkCollision() {
       isPlayerImmune = true;
       immunityTimer = immuneDuration;
       surpriseItems.splice(i, 1); // Remove the collided surprise item
-      if (surpriseItemCounter % 2 === 0) {
+      if (isPlayerImmune == true) {
         playerImage.src = "assets/player.png";
       } else {
         playerImage.src = "assets/player_original.png";
@@ -350,7 +350,7 @@ if (isPlayerImmune) {
     immunityTimer -= 1 / 60; // Decrement timer by 1 second per frame
     if (immunityTimer <= 0) {
       isPlayerImmune = false;
-      playerImage = playerImageOriginal;
+      playerImage.src = "assets/player_original.png";
     }
   }
 
@@ -381,6 +381,7 @@ canvas.addEventListener("mousemove", function (event) {
   var rect = canvas.getBoundingClientRect();
   playerX = event.clientX - rect.left - playerWidth / 2;
 });
+
 
 // Start the game loop
 resetItems();
