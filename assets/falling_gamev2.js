@@ -34,6 +34,7 @@ var surpriseItems = []; // Array to store surprise item positions and speeds
 var medicalItems = [];
 var maxItems = 8; // Maximum number of items on the screen
 var itemSpeed = 2;
+var maxFallSpeed = 25; //Maximum fall speed of all items
 var fallAcceleration = 0.004; // Adjust the acceleration value to control the speed increase
 var spawnCounter = 1; // Counter for spawning items
 var score = 0;
@@ -43,17 +44,17 @@ var isPlayerImmune = false;
 var immuneDuration = 10; // Duration of player immunity in seconds
 var immunityTimer = 0; // Remaining time for player immunity
 
-var backgroundMusic = new Audio("assets/game_music.mp3");
+var backgroundMusic = new Audio("assets/game_music.m4a");
 backgroundMusic.loop = true;
 backgroundMusic.volume = 0.1;
 backgroundMusic.play();
 
-var goodItemSound = new Audio("assets/point_sound.mp3");
-var badItemSound = new Audio("assets/damage_sound.mp3");
+var goodItemSound = new Audio("assets/point_sound.m4a");
+var badItemSound = new Audio("assets/damage_sound.m4a");
 badItemSound.volume = 0.7;
-var lowScoreSound = new Audio("assets/low_score_gameover.mp3");
+var lowScoreSound = new Audio("assets/low_score_gameover.m4a");
 lowScoreSound.volume = 0.7;
-var highScoreSound = new Audio("assets/high_score_gameover.mp3");
+var highScoreSound = new Audio("assets/high_score_gameover.m4a");
 highScoreSound.volume = 0.7;
 
 restartButton.innerText = "Try Again?";
@@ -304,8 +305,17 @@ function update() {
   if(score <= 0) {
     score = 0; 
   }
-  
 
+  // Draw Speed
+  ctx.font = "24px Arial";
+  ctx.fillStyle = "yellow";
+  ctx.strokeStyle = "black"; // Set the outline color to black
+  ctx.lineWidth = 2; // Set the outline width
+  ctx.strokeText("Speed: " + Math.floor(itemSpeed), 180, 30);
+  ctx.fillText("Speed: " + Math.floor(itemSpeed), 180, 30);
+  if(score <= 0) {
+    score = 0; 
+  }
 
   // Draw hearts
   for (var i = 0; i < hearts; i++) {
@@ -356,6 +366,10 @@ if (isPlayerImmune) {
 
   // Increase overall fall speed
   itemSpeed += fallAcceleration;
+  if (itemSpeed > maxFallSpeed) {
+    itemSpeed = maxFallSpeed;
+  }
+  
 
   // Spawn new items
   spawnCounter++;
