@@ -44,17 +44,17 @@ var isPlayerImmune = false;
 var immuneDuration = 10; // Duration of player immunity in seconds
 var immunityTimer = 0; // Remaining time for player immunity
 
-var backgroundMusic = new Audio("assets/game_music.m4a");
+var backgroundMusic = new Audio("assets/game_music.mp3");
 backgroundMusic.loop = true;
 backgroundMusic.volume = 0.1;
 backgroundMusic.play();
 
-var goodItemSound = new Audio("assets/point_sound.m4a");
-var badItemSound = new Audio("assets/damage_sound.m4a");
+var goodItemSound = new Audio("assets/point_sound.mp3");
+var badItemSound = new Audio("assets/damage_sound.mp3");
 badItemSound.volume = 0.7;
-var lowScoreSound = new Audio("assets/low_score_gameover.m4a");
+var lowScoreSound = new Audio("assets/low_score_gameover.mp3");
 lowScoreSound.volume = 0.7;
-var highScoreSound = new Audio("assets/high_score_gameover.m4a");
+var highScoreSound = new Audio("assets/high_score_gameover.mp3");
 highScoreSound.volume = 0.7;
 
 restartButton.innerText = "Try Again?";
@@ -344,7 +344,7 @@ if (isPlayerImmune) {
       300,
       300
     );
-    if (score < 1000) {
+    if (score < 20000) {
         lowScoreSound.play();
       } else {
         highScoreSound.play();
