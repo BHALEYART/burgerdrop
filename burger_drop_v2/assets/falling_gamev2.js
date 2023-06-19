@@ -334,7 +334,7 @@ if (isPlayerImmune) {
       300,
       300
     );
-    if (score < 1000) {
+    if (score < 10000) {
         lowScoreSound.play();
       } else {
         highScoreSound.play();
