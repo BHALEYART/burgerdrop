@@ -90,7 +90,7 @@ gameOverPileImage.src = "assets/game_over_pile.png";
 playerImage.src = "assets/player.png";
 playerImageOriginal.src = "assets/player_original.png";
 goodItemImage.src = "assets/good_item.png";
-badItemImage.src = "assets/bad_item2.png";
+badItemImage.src = "assets/bad_item.png";
 surpriseItemImage.src = "assets/surprise_item.png";
 medicalItemImage.src = "assets/medical_item.png";
 heartImage.src = "assets/heart.png";
@@ -344,13 +344,21 @@ if (isPlayerImmune) {
       300,
       300
     );
-    if (score < 20000) {
+    if (score < 1000) {
         lowScoreSound.play();
       } else {
         highScoreSound.play();
       }
     document.body.appendChild(restartButton);
     document.body.appendChild(watchButton);
+    ctx.drawImage(
+      gameOverPileImage,
+      -70,                          // X-coordinate of the image's top-left corner
+      320,        // Y-coordinate of the image's top-left corner
+      600,               // Width of the image
+      600                         // Height of the image
+    );
+    
     return; // Exit the update function
     
   }
