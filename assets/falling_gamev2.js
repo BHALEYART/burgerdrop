@@ -107,7 +107,7 @@ function checkCollision() {
       playerY < goodItem.y + goodItemHeight &&
       playerY + playerHeight > goodItem.y
     ) {
-      score += 10;
+      score += 10 * itemSpeed;
       goodItemSound.play();
       goodItems.splice(i, 1); // Remove the collided good item
     }
@@ -300,8 +300,8 @@ function update() {
   ctx.fillStyle = "orange";
   ctx.strokeStyle = "black"; // Set the outline color to black
   ctx.lineWidth = 2; // Set the outline width
-  ctx.strokeText("Score: " + score, 10, 30);
-  ctx.fillText("Score: " + score, 10, 30);
+  ctx.strokeText("Score: " + Math.floor(score), 10, 30);
+  ctx.fillText("Score: " + Math.floor(score), 10, 30);
   if(score <= 0) {
     score = 0; 
   }
@@ -311,8 +311,8 @@ function update() {
   ctx.fillStyle = "yellow";
   ctx.strokeStyle = "black"; // Set the outline color to black
   ctx.lineWidth = 2; // Set the outline width
-  ctx.strokeText("Speed: " + Math.floor(itemSpeed), 180, 30);
-  ctx.fillText("Speed: " + Math.floor(itemSpeed), 180, 30);
+  ctx.strokeText("SpeedX: " + Math.floor(itemSpeed), 180, 30);
+  ctx.fillText("SpeedX: " + Math.floor(itemSpeed), 180, 30);
   if(score <= 0) {
     score = 0; 
   }
