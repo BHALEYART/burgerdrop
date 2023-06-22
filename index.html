@@ -1,7 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Game</title>
+  <title>BurgerDrop</title>
+  <script src="preloader.js"></script>
+  <script>
+    // Define the assets to preload
+    var assets = [
+      { type: 'image', url: 'assets/game_over_pile.png' },
+      { type: 'image', url: 'assets/player.png' },
+      { type: 'image', url: 'assets/player_original.png' },
+      { type: 'image', url: 'assets/good_item.png' },
+      { type: 'image', url: 'assets/bad_item.png' },
+      { type: 'image', url: 'assets/surprise_item.png' },
+      { type: 'image', url: 'assets/medical_item.png' },
+      { type: 'image', url: 'assets/heart.png' },
+      { type: 'image', url: 'assets/game_over.png' },
+      { type: 'image', url: 'assets/menu_shader.png' },
+      { type: 'audio', url: 'assets/game_music.mp3' },
+      { type: 'audio', url: 'assets/point_sound.mp3' },
+      { type: 'audio', url: 'assets/damage_sound.mp3' },
+      { type: 'audio', url: 'assets/low_score_gameover.mp3' },
+      { type: 'audio', url: 'assets/high_score_gameover.mp3' }
+    ];
+
+    // Create a new preloader instance
+    var preloader = new Preloader();
+
+    // Preload the assets
+    preloader.preload(assets, function() {
+      console.log('All assets are preloaded!');
+      // Start your game or perform any necessary actions after preloading
+    });
+  </script>
   <style>
     body {
       margin: 0;
