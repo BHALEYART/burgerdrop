@@ -402,7 +402,9 @@ canvas.addEventListener("mousemove", function (event) {
 
 // Define a function to play background music
 function playBackgroundMusic() {
-  backgroundMusic.play();
+  if(speed >= 2.1){
+    backgroundMusic.play();
+  }
 }
 
 // Start the game loop
