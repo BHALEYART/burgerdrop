@@ -47,8 +47,6 @@ var immunityTimer = 0; // Remaining time for player immunity
 var backgroundMusic = new Audio("assets/game_music.mp3");
 backgroundMusic.loop = true;
 backgroundMusic.volume = 0.1;
-backgroundMusic.play();
-
 var goodItemSound = new Audio("assets/point_sound.mp3");
 var badItemSound = new Audio("assets/damage_sound.mp3");
 badItemSound.volume = 0.7;
@@ -83,14 +81,12 @@ watchButton.style.border = "none";
 watchButton.style.borderRadius = "5px";
 watchButton.style.zIndex = "9999";
 
-
-
 // Load images
 gameOverPileImage.src = "assets/game_over_pile.png";
 playerImage.src = "assets/player.png";
 playerImageOriginal.src = "assets/player_original.png";
 goodItemImage.src = "assets/good_item.png";
-badItemImage.src = "assets/bad_item2.png";
+badItemImage.src = "assets/bad_item.png";
 surpriseItemImage.src = "assets/surprise_item.png";
 medicalItemImage.src = "assets/medical_item.png";
 heartImage.src = "assets/heart.png";
@@ -404,8 +400,13 @@ canvas.addEventListener("mousemove", function (event) {
   playerX = event.clientX - rect.left - playerWidth / 2;
 });
 
+// Define a function to play background music
+function playBackgroundMusic() {
+  backgroundMusic.play();
+}
 
 // Start the game loop
 resetItems();
+setTimeout(playBackgroundMusic, 1000); // Play background music after 1 second
 update();
 
